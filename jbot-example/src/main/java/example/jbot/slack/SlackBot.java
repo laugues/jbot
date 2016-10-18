@@ -21,7 +21,8 @@ import java.util.regex.Matcher;
  * @version 1.0.0, 05/06/2016
  */
 @Component
-public class SlackBot extends Bot {
+public class SlackBot extends Bot
+{
 
     private static final Logger logger = LoggerFactory.getLogger(SlackBot.class);
 
@@ -53,7 +54,9 @@ public class SlackBot extends Bot {
      */
     @Controller(events = {EventType.DIRECT_MENTION, EventType.DIRECT_MESSAGE})
     public void onReceiveDM(WebSocketSession session, Event event) {
-        reply(session, event, new Message("Hi, I am " + slackService.getCurrentUser().getName()));
+        if (event.getText().contains("hi")) {
+            reply(session, event, new Message("Hi, I am " + slackService.getCurrentUser().getName()));
+        }
     }
 
     /**
@@ -67,9 +70,9 @@ public class SlackBot extends Bot {
     @Controller(events = EventType.MESSAGE, pattern = "^([a-z ]{2})(\\d+)([a-z ]{2})$")
     public void onReceiveMessage(WebSocketSession session, Event event, Matcher matcher) {
         reply(session, event, new Message("First group: " + matcher.group(0) + "\n" +
-                "Second group: " + matcher.group(1) + "\n" +
-                "Third group: " + matcher.group(2) + "\n" +
-                "Fourth group: " + matcher.group(3)));
+                                              "Second group: " + matcher.group(1) + "\n" +
+                                              "Third group: " + matcher.group(2) + "\n" +
+                                              "Fourth group: " + matcher.group(3)));
     }
 
     /**
@@ -98,7 +101,6 @@ public class SlackBot extends Bot {
         logger.info("File shared: {}", event);
     }
 
-
     /**
      * Conversation feature of JBot. This method is the starting point of the conversation (as it
      * calls {@link Bot#startConversation(Event, String)} within it. You can chain methods which will be invoked
@@ -108,7 +110,7 @@ public class SlackBot extends Bot {
      * @param session
      * @param event
      */
-    @Controller(pattern = "(setup meeting)", next = "confirmTiming")
+    @Controller(events = EventType.DIRECT_MESSAGE, pattern = "setup meeting", next = "confirmTiming")
     public void setupMeeting(WebSocketSession session, Event event) {
         startConversation(event, "confirmTiming");   // start conversation
         reply(session, event, new Message("Cool! At what time (ex. 15:30) do you want me to set up the meeting?"));
@@ -120,10 +122,10 @@ public class SlackBot extends Bot {
      * @param session
      * @param event
      */
-    @Controller(next = "askTimeForMeeting")
+    @Controller(events = EventType.DIRECT_MESSAGE, next = "askTimeForMeeting")
     public void confirmTiming(WebSocketSession session, Event event) {
         reply(session, event, new Message("Your meeting is set at " + event.getText() +
-                ". Would you like to repeat it tomorrow?"));
+                                              ". Would you like to repeat it tomorrow?"));
         nextConversation(event);    // jump to next question in conversation
     }
 
@@ -133,7 +135,7 @@ public class SlackBot extends Bot {
      * @param session
      * @param event
      */
-    @Controller(next = "askWhetherToRepeat")
+    @Controller(events = EventType.DIRECT_MESSAGE, next = "askWhetherToRepeat")
     public void askTimeForMeeting(WebSocketSession session, Event event) {
         if (event.getText().contains("yes")) {
             reply(session, event, new Message("Okay. Would you like me to set a reminder for you?"));
@@ -150,7 +152,7 @@ public class SlackBot extends Bot {
      * @param session
      * @param event
      */
-    @Controller
+    @Controller(events = EventType.DIRECT_MESSAGE)
     public void askWhetherToRepeat(WebSocketSession session, Event event) {
         if (event.getText().contains("yes")) {
             reply(session, event, new Message("Great! I will remind you tomorrow before the meeting."));
