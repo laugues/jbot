@@ -3,13 +3,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>me.ramswaroop.jbot</groupId>
+        <groupId>com.laugues.jbot</groupId>
         <artifactId>jbot-parent</artifactId>
         <version>3.0.3-SNAPSHOT</version>
-        <relativePath>..</relativePath>
     </parent>
 
     <artifactId>jbot</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
     <name>JBot</name>
     <description>LEGO for building bots. Make Slack, Facebook and Twitter bots in Java in minutes.</description>
     <url>https://github.com/ramswaroop/jbot</url>

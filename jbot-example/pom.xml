@@ -5,10 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.4.0.RELEASE</version>
-        <relativePath/>
+        <groupId>com.laugues.jbot</groupId>
+        <artifactId>jbot-parent</artifactId>
+        <version>3.0.3-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbot-example</artifactId>
@@ -18,16 +17,28 @@
 
     <dependencies>
         <dependency>
-            <groupId>me.ramswaroop.jbot</groupId>
+            <groupId>com.laugues.jbot</groupId>
             <artifactId>jbot</artifactId>
-            <version>3.0.3-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
